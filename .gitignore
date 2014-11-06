@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+
+# DisCODe
+/build
+/build*
+/dist
+.settings
+.project
+.cproject
+/data/*/
+*~
