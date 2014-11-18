@@ -4,14 +4,19 @@ Checkers - DisCODe Component Library
 Description
 -----------
 
-Fill this section with description of this library.
+Components and tasks for checkers vision.
 
 Dependencies
 ------------
 
-Put here any dependencies of this library (other DCLs, third party libraries etc)
+DCL:
+CvBasic
+
+Libraries and other tools:
+OpenCV
+ROS
 
 Maintainer
 ----------
 
-Provide any information about yourself
+Aleksandra Karbarczyk (akarbarczyk@gmail.com)
