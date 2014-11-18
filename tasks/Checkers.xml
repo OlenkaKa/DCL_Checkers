@@ -1,0 +1,127 @@
+<Task>
+	<!-- reference task information -->
+	<Reference>
+		<Author>
+			<name>Aleksandra Karbarczyk</name>
+			<link></link>
+		</Author>
+		
+		<Description>
+			<brief></brief>
+			<full></full>	
+		</Description>
+	</Reference>
+	
+	<!-- task definition -->
+	<Subtasks>
+		<Subtask name="Processing">
+			<Executor name="Exec1" period="0.1">
+				
+				<Component name="Source" type="CvBasic:Sequence" priority="1" bump="0">
+					<param name="sequence.pattern">[^!]*\.png</param>
+					<param name="sequence.directory">%[TASK_LOCATION]%/../data/</param>
+					<param name="mode.loop">1</param>
+					<param name="mode.auto_trigger">0</param>
+				</Component>
+				
+				<Component name="Convert" type="CvBasic:CvColorConv" priority="2" bump="0">
+					<param name="type">BGR2HSV</param>
+				</Component>
+				
+				<Component name="InRange_checkers" type="Checkers:CvInRange" priority="3" bump="0">
+					<param name="channels">3</param>
+					<param name="min_values">0 70 50</param>
+					<param name="max_values">180 255 255</param>
+				</Component>
+				
+				<Component name="InRange_chessboard" type="Checkers:CvInRange" priority="3" bump="0">
+					<param name="channels">3</param>
+					<param name="min_values">0 0 0</param>
+					<param name="max_values">0 0 255</param>
+				</Component>
+				
+				<Component name="Morphology_checkers" type="CvBasic:CvMorphology" priority="4" bump="0">
+					<param name="iterations">2</param>
+					<param name="type">MORPH_OPEN</param>
+				</Component>
+				
+				<Component name="Morphology_chessboard" type="CvBasic:CvMorphology" priority="4" bump="0">
+					<param name="iterations">1</param>
+					<param name="type">MORPH_OPEN</param>
+				</Component>
+				
+				<Component name="Circles" type="CvBasic:CvHoughCircles" priority="5" bump="0">
+					<param name="minDist">50</param>
+					<param name="minCircleRadius">30</param>
+					<param name="maxCircleRadius">45</param>
+					<param name="accumulatorThreshold">10</param>
+					<param name="inverseRatioOfAccumulatorResolution">0.2</param>
+					<param name="cannyHigherThreshold">100</param>
+				</Component>
+				
+				<Component name="Contour" type="CvBasic:CvContour" priority="5" bump="0">
+				</Component>
+				
+				<Component name="ProcessData" type="Checkers:ProcessData" priority="6" bump="0">
+				</Component>
+				
+			</Executor>
+		</Subtask>
+		
+		<!--
+		<Subtask name="Connection">
+			<Executor name="Exec2" period="0.2">
+				<Component name="ROSProxy" type="Checkers:ROSProxy" priority="1" bump="0">
+				</Component>
+			</Executor>
+		</Subtask>
+		-->
+		
+		<Subtask name="Visualisation">
+			<Executor name="Exec3" period="0.2">
+				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="0">
+					<param name="count">2</param>
+					<param name="title">Circles,Chessboard</param>
+				</Component>
+			</Executor>
+		</Subtask>	
+	
+	</Subtasks>
+	
+	<!-- pipes connecting datastreams -->
+	<DataStreams>
+		<Source name="Source.out_img">
+			<sink>Convert.in_img</sink>
+			<sink>Window.in_img0</sink>
+		</Source>
+		<Source name="Convert.out_img">
+			<sink>InRange_checkers.in_img</sink>
+			<sink>InRange_chessboard.in_img</sink>
+		</Source>
+		<Source name="InRange_checkers.out_img">
+			<sink>Morphology_checkers.in_img</sink>
+		</Source>
+		<Source name="Morphology_checkers.out_img">
+			<sink>Circles.in_img</sink>
+		</Source>
+		<Source name="Circles.out_circles">
+			<sink>ProcessData.in_circles</sink>
+			<sink>Window.in_draw0</sink>
+		</Source>
+		<Source name="InRange_chessboard.out_img">
+			<sink>Morphology_chessboard.in_img</sink>
+		</Source>
+		<Source name="Morphology_chessboard.out_img">
+			<sink>Contour.in_img</sink>
+		</Source>
+		<Source name="Contour.out_contours">
+			<sink>ProcessData.in_contours</sink>
+		</Source>
+		<Source name="Contour.out_img">
+			<sink>Window.in_img1</sink>
+		</Source>
+	</DataStreams>
+</Task>
+
+
+
