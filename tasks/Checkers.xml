@@ -62,7 +62,10 @@
 				<Component name="Contour" type="CvBasic:CvContour" priority="5" bump="0">
 				</Component>
 				
-				<Component name="ProcessData" type="Checkers:ProcessData" priority="6" bump="0">
+				<Component name="GenerateCheckers" type="Checkers:GenerateCheckers" priority="6" bump="0">
+				</Component>
+
+				<Component name="ProcessData" type="Checkers:ProcessData" priority="7" bump="0">
 				</Component>
 				
 			</Executor>
@@ -95,17 +98,19 @@
 			<sink>Window.in_img0</sink>
 		</Source>
 		<Source name="Convert.out_img">
+			<sink>GenerateCheckers.in_img</sink>
 			<sink>InRange_checkers.in_img</sink>
 			<sink>InRange_chessboard.in_img</sink>
 		</Source>
 		<Source name="InRange_checkers.out_img">
 			<sink>Morphology_checkers.in_img</sink>
+			<sink>GenerateCheckers.in_img_map</sink>
 		</Source>
 		<Source name="Morphology_checkers.out_img">
 			<sink>Circles.in_img</sink>
 		</Source>
 		<Source name="Circles.out_circles">
-			<sink>ProcessData.in_circles</sink>
+			<sink>GenerateCheckers.in_circles</sink>
 			<sink>Window.in_draw0</sink>
 		</Source>
 		<Source name="InRange_chessboard.out_img">
@@ -116,6 +121,9 @@
 		</Source>
 		<Source name="Contour.out_contours">
 			<sink>ProcessData.in_contours</sink>
+		</Source>
+		<Source name="GenerateCheckers.out_circles">
+			<sink>ProcessData.in_circles</sink>
 		</Source>
 		<Source name="Contour.out_img">
 			<sink>Window.in_img1</sink>

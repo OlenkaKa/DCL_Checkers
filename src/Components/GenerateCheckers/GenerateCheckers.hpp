@@ -4,39 +4,40 @@
  * \author Aleksandra Karbarczyk
  */
 
-#ifndef PROCESSDATA_HPP_
-#define PROCESSDATA_HPP_
+#ifndef GENERATECHECKERS_HPP_
+#define GENERATECHECKERS_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
 #include "EventHandler2.hpp"
-#include "Types/ImageData.hpp"
+#include "Types/Circles/Circles.hpp"
 #include "Types/ColorCircle.hpp"
 
 #include <opencv2/opencv.hpp>
 
+
 namespace Processors {
-namespace ProcessData {
+namespace GenerateCheckers {
 
 /*!
- * \class ProcessData
- * \brief ProcessData processor class.
+ * \class GenerateCheckers
+ * \brief GenerateCheckers processor class.
  *
  * Description TODO
  */
-class ProcessData: public Base::Component {
+class GenerateCheckers: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	ProcessData(const std::string & name = "ProcessData");
+	GenerateCheckers(const std::string & name = "GenerateCheckers");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~ProcessData();
+	virtual ~GenerateCheckers();
 
 	/*!
 	 * Prepare components interface (register streams and handlers).
@@ -69,30 +70,36 @@ protected:
 
 
 	// Input data streams
-	Base::DataStreamIn<std::vector<Types::ColorCircle> > in_circles;
-	Base::DataStreamIn<std::vector<std::vector<cv::Point> > > in_contours;
+	Base::DataStreamIn<Types::Circles> in_circles;
+	Base::DataStreamIn<cv::Mat> in_img;
+	Base::DataStreamIn<cv::Mat> in_img_map;
 
 	// Output data streams
-	Base::DataStreamOut<Types::ImageData> out_data;
+	Base::DataStreamOut<std::vector<Types::ColorCircle> > out_circles;
 
 	// Handlers
 	Base::EventHandler2 h_onProcess;
+	Base::EventHandler2 h_onProcessWithMap;
 
 	// Properties
-	Base::Property<int> fields_number;
 
 	
 	// Handlers
 	void onProcess();
+	void onProcessWithMap();
+	
+	// Others
+	Types::ColorCircle::Color findColor(const cv::Mat& img);
+	Types::ColorCircle::Color findColor(const cv::Mat& img, const cv::Mat& img_map);
 
 };
 
-} //: namespace ProcessData
+} //: namespace GenerateCheckers
 } //: namespace Processors
 
 /*
  * Register processor component.
  */
-REGISTER_COMPONENT("ProcessData", Processors::ProcessData::ProcessData)
+REGISTER_COMPONENT("GenerateCheckers", Processors::GenerateCheckers::GenerateCheckers)
 
-#endif /* PROCESSDATA_HPP_ */
+#endif /* GENERATECHECKERS_HPP_ */

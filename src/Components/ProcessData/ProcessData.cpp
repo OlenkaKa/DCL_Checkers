@@ -17,8 +17,8 @@ namespace ProcessData {
 
 ProcessData::ProcessData(const std::string & name) :
 		Base::Component(name) , 
-		chessboard_size("chessboard_size", 8, "chessboard_size") {
-	registerProperty(chessboard_size);
+		fields_number("fields_number", 8, "fields_number") {
+	registerProperty(fields_number);
 
 }
 
@@ -39,6 +39,7 @@ void ProcessData::prepareInterface() {
 }
 
 bool ProcessData::onInit() {
+	CLOG(LERROR)<<"ProcessData init";
 	return true;
 }
 
@@ -56,14 +57,11 @@ bool ProcessData::onStart() {
 
 void ProcessData::onProcess() {
 	std::vector<std::vector<cv::Point> > white_fields = in_contours.read();
-	Types::Circles circles = in_circles.read();
-	Types::ChessboardData result;
+	std::vector<Types::ColorCircle> circles = in_circles.read();
+	Types::ImageData result;
 
 	CLOG(LERROR)<<"ProcessData: Process started.";
-	for (std::vector<cv::Vec3f>::iterator it = circles.circles.begin() ; it != circles.circles.end(); ++it)
-	{
-		result.addCircle(cv::Point((*it)[0], (*it)[1]));
-	}
+	result.circles = circles;
 	int max_x = INT_MIN;
 	int max_y = INT_MIN;
 	int min_x = INT_MAX;
