@@ -71,14 +71,12 @@
 			</Executor>
 		</Subtask>
 		
-		<!--
 		<Subtask name="Connection">
 			<Executor name="Exec2" period="0.2">
 				<Component name="ROSProxy" type="Checkers:ROSProxy" priority="1" bump="0">
 				</Component>
 			</Executor>
 		</Subtask>
-		-->
 		
 		<Subtask name="Visualisation">
 			<Executor name="Exec3" period="0.2">
@@ -127,6 +125,9 @@
 		</Source>
 		<Source name="Contour.out_img">
 			<sink>Window.in_img1</sink>
+		</Source>
+		<Source name="ProcessData.out_data">
+			<sink>ROSProxy.in_data</sink>
 		</Source>
 	</DataStreams>
 </Task>

@@ -95,8 +95,7 @@ void ROSProxy::onNewData() {
 	ros::spinOnce();
 }
 
-void onTopicNameChanged(const std::string & old_value, const std::string & new_value) {
-	// Cannot change topic name now.
+void ROSProxy::onTopicNameChanged(const std::string & old_value, const std::string & new_value) {
 }
 
 

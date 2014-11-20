@@ -5,6 +5,7 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 FILE(GLOB files *.cpp)
 
 # Find required packages
+FIND_PACKAGE( OpenCV REQUIRED )
 FIND_PACKAGE(roscpp)
 FIND_PACKAGE(std_msgs)
 FIND_PACKAGE(irp6_checkers)
@@ -14,6 +15,6 @@ FIND_PACKAGE(rosconsole)
 ADD_LIBRARY(ROSProxy SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(ROSProxy ${DisCODe_LIBRARIES} ${roscpp_LIBRARIES} ${std_msgs_LIBRARIES})
+TARGET_LINK_LIBRARIES(ROSProxy ${DisCODe_LIBRARIES} ${OpenCV_LIBS} ${roscpp_LIBRARIES} ${std_msgs_LIBRARIES})
 
 INSTALL_COMPONENT(ROSProxy)
