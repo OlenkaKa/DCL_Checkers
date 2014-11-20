@@ -16,11 +16,11 @@ class ColorCircle {
 public:
 
 	enum Color {
-		COLOR_BLUE,
-		COLOR_GREEN,
-		COLOR_RED,
-		COLOR_YELLOW,
-		COLOR_OTHER
+		COLOR_BLUE = 0,
+		COLOR_GREEN = 1,
+		COLOR_RED = 2,
+		COLOR_YELLOW = 3,
+		COLOR_OTHER = 4
 	};
 	
 	ColorCircle(cv::Point checker_center, Color checker_color):

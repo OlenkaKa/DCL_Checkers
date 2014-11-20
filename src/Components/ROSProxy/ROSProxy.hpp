@@ -15,9 +15,6 @@
 #include "Types/ImageData.hpp"
 
 #include "ros/ros.h"
-#include "std_msgs/Int32.h"	// To remove
-//#include "irp6_checkers/TODO.h"
-//#include "irp6_checkers/TODO.h"
 
 namespace Processors {
 namespace ROSProxy {
