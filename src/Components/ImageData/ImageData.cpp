@@ -61,6 +61,7 @@ void ImageData::onProcess() {
 	Types::ImageData result;
 
 	CLOG(LERROR)<<"ImageData: Process started.";
+	result.white_fields_num = white_fields.size();
 	result.checker_fields = color_points;
 	int max_x = INT_MIN;
 	int max_y = INT_MIN;
