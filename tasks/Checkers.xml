@@ -62,10 +62,10 @@
 				<Component name="Contour" type="CvBasic:CvContour" priority="5" bump="0">
 				</Component>
 				
-				<Component name="GenerateCheckers" type="Checkers:GenerateCheckers" priority="6" bump="0">
+				<Component name="GenerateCheckers" type="Checkers:ColorPoints" priority="6" bump="0">
 				</Component>
 
-				<Component name="ProcessData" type="Checkers:ProcessData" priority="7" bump="0">
+				<Component name="ProcessData" type="Checkers:ImageData" priority="7" bump="0">
 				</Component>
 				
 			</Executor>
@@ -102,7 +102,7 @@
 		</Source>
 		<Source name="InRange_checkers.out_img">
 			<sink>Morphology_checkers.in_img</sink>
-			<sink>GenerateCheckers.in_img_map</sink>
+			<sink>GenerateCheckers.in_img_mask</sink>
 		</Source>
 		<Source name="Morphology_checkers.out_img">
 			<sink>Circles.in_img</sink>
@@ -120,8 +120,8 @@
 		<Source name="Contour.out_contours">
 			<sink>ProcessData.in_contours</sink>
 		</Source>
-		<Source name="GenerateCheckers.out_circles">
-			<sink>ProcessData.in_circles</sink>
+		<Source name="GenerateCheckers.out_points">
+			<sink>ProcessData.in_color_points</sink>
 		</Source>
 		<Source name="Contour.out_img">
 			<sink>Window.in_img1</sink>

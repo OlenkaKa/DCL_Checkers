@@ -8,7 +8,7 @@
 #ifndef IMAGEDATA_HPP_
 #define IMAGEDATA_HPP_
 
-#include "Types/ColorCircle.hpp"
+#include "Types/ColorPoint.hpp"
 
 #include <opencv2/core/core.hpp>
 
@@ -19,20 +19,14 @@ public:
 	ImageData() {
 	}
 
-	void addCircle(Types::ColorCircle circle) {
-		circles.push_back(circle);
+	void addColorPoint(Types::ColorPoint point) {
+		checker_fields.push_back(point);
 	}
-
-	void addWhiteField(cv::Point field) {
-		white_fields.push_back(field);
-	}
-
-	int max_x;
-	int max_y;
-	int min_x;
-	int min_y;
-	std::vector<cv::Point> white_fields;
-	std::vector<Types::ColorCircle> circles;
+	
+	int white_fields_num;
+	cv::Point max_corner;
+	cv::Point min_corner;
+	std::vector<Types::ColorPoint> checker_fields;
 };
 
 }

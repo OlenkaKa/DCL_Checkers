@@ -1,18 +1,18 @@
 /*
- * ColorCircle.hpp
+ * ColorPoint.hpp
  *
- *  Created on: 18-11-2014
+ *  Created on: 05-12-2014
  *      Author: Aleksandra Karbarczyk
  */
 
-#ifndef COLORCIRCLE_HPP_
-#define COLORCIRCLE_HPP_
+#ifndef COLORPOINT_HPP_
+#define COLORPOINT_HPP_
 
 #include <opencv2/core/core.hpp>
 
 namespace Types {
 
-class ColorCircle {
+class ColorPoint {
 public:
 
 	enum Color {
@@ -23,14 +23,14 @@ public:
 		COLOR_OTHER = 4
 	};
 	
-	ColorCircle(cv::Point checker_center, Color checker_color):
-		center(checker_center), color(checker_color) {
+	ColorPoint(cv::Point new_point, Color new_color):
+		point(new_point), color(new_color) {
 	}
 
-	cv::Point center;
+	cv::Point point;
 	Color color;
 };
 
 }
 
-#endif /* COLORCIRCLE_HPP_ */
+#endif /* COLORPOINT_HPP_ */

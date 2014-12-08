@@ -64,16 +64,17 @@ void ROSProxy::onNewData() {
 	Types::ImageData img_data = in_data.read();
 	irp6_checkers::ImageData msg;
 	irp6_checkers::Point point;
-	irp6_checkers::ColorCircle circle;
+	irp6_checkers::ColorPoint circle;
 	
-	point.x = img_data.max_x;
-	point.y = img_data.max_y;
-	msg.MaxChessboardField = point;
+	point.x = img_data.max_corner.x;
+	point.y = img_data.max_corner.y;
+	msg.MaxCorner = point;
 
-	point.x = img_data.min_x;
-	point.y = img_data.min_y;
-	msg.MinChessboardField = point;
+	point.x = img_data.min_corner.x;
+	point.y = img_data.min_corner.y;
+	msg.MinCorner = point;
 
+	/*
 	std::vector<cv::Point>::iterator end_it_fields = img_data.white_fields.end();
 	for(std::vector<cv::Point>::iterator it_fields = img_data.white_fields.begin(); it_fields!=end_it_fields; ++it_fields)
 	{
@@ -81,14 +82,16 @@ void ROSProxy::onNewData() {
 		point.y = (*it_fields).y;
 		msg.WhiteFields.push_back(point);
 	}
-	
-	std::vector<Types::ColorCircle>::iterator end_it_circles = img_data.circles.end();
-	for(std::vector<Types::ColorCircle>::iterator it_circles = img_data.circles.begin(); it_circles!=end_it_circles; ++it_circles)
+	*/
+	msg.WhiteFieldsNum = img_data.white_fields_num;
+
+	std::vector<Types::ColorPoint>::iterator end_it = img_data.checker_fields.end();
+	for(std::vector<Types::ColorPoint>::iterator it = img_data.checker_fields.begin(); it!=end_it; ++it)
 	{
-		circle.x = (*it_circles).center.x;
-		circle.y = (*it_circles).center.y;
-		circle.color = (*it_circles).color;
-		msg.Circles.push_back(circle);
+		circle.x = (*it).point.x;
+		circle.y = (*it).point.y;
+		circle.color = (*it).color;
+		msg.CheckerFields.push_back(circle);
 	}
 
 	pub.publish(msg);

@@ -7,103 +7,111 @@
 #include <memory>
 #include <string>
 
-#include "GenerateCheckers.hpp"
+#include "ColorPoints.hpp"
 #include "Common/Logger.hpp"
 
 #include <boost/bind.hpp>
 
 namespace Processors {
-namespace GenerateCheckers {
+namespace ColorPoints {
 
-GenerateCheckers::GenerateCheckers(const std::string & name) :
+ColorPoints::ColorPoints(const std::string & name) :
 		Base::Component(name)  {
 
 }
 
-GenerateCheckers::~GenerateCheckers() {
+ColorPoints::~ColorPoints() {
 }
 
-void GenerateCheckers::prepareInterface() {
+void ColorPoints::prepareInterface() {
 	// Register data streams, events and event handlers HERE!
 	registerStream("in_circles", &in_circles);
 	registerStream("in_img", &in_img);
-	registerStream("in_img_map", &in_img_map);
-	registerStream("out_circles", &out_circles);
+	registerStream("in_img_mask", &in_img_mask);
+	registerStream("out_points", &out_points);
 	// Register handlers
-	h_onProcess.setup(boost::bind(&GenerateCheckers::onProcess, this));
+	h_onProcess.setup(boost::bind(&ColorPoints::onProcess, this));
 	registerHandler("onProcess", &h_onProcess);
 	addDependency("onProcess", &in_circles);
 	addDependency("onProcess", &in_img);
 
-	h_onProcessWithMap.setup(boost::bind(&GenerateCheckers::onProcessWithMap, this));
-	registerHandler("onProcessWithMap", &h_onProcessWithMap);
-	addDependency("onProcessWithMap", &in_circles);
-	addDependency("onProcessWithMap", &in_img);
-	addDependency("onProcessWithMap", &in_img_map);
+	h_onProcessWithMask.setup(boost::bind(&ColorPoints::onProcessWithMask, this));
+	registerHandler("onProcessWithMask", &h_onProcessWithMask);
+	addDependency("onProcessWithMask", &in_circles);
+	addDependency("onProcessWithMask", &in_img);
+	addDependency("onProcessWithMask", &in_img_mask);
 }
 
-bool GenerateCheckers::onInit() {
-	CLOG(LERROR)<<"GenerateCheckers init";
+bool ColorPoints::onInit() {
+	CLOG(LERROR)<<"ColorPoints init";
 	return true;
 }
 
-bool GenerateCheckers::onFinish() {
+bool ColorPoints::onFinish() {
 	return true;
 }
 
-bool GenerateCheckers::onStop() {
+bool ColorPoints::onStop() {
 	return true;
 }
 
-bool GenerateCheckers::onStart() {
+bool ColorPoints::onStart() {
 	return true;
 }
 
-void GenerateCheckers::onProcess() {
+void ColorPoints::onProcess() {
 	const cv::Mat src = in_img.read();
 	const Types::Circles circles = in_circles.read();
-	CLOG(LERROR)<<"Start onProcess in GenerateCheckers";
-	std::vector<Types::ColorCircle> result;
+	CLOG(LERROR)<<"Start onProcess in ColorPoints";
+	std::vector<Types::ColorPoint> result;
 	float x, y, length;
 	std::vector<Vec3f>::const_iterator end_it = circles.circles.end();
 	for(std::vector<Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
 	{
 		x = (*it)[0]-(*it)[2];
+		if(x < 0) x = 0;
 		y = (*it)[1]-(*it)[2];
+		if(y < 0) y = 0;
 		length = 2*(*it)[2];
+		if(length+x > src.cols) length = src.cols-x;
+		if(length+y > src.rows) length = src.rows-y;
 		cv::Rect circle_rect = cv::Rect(x, y, length, length);
 		cv::Mat circle_img(src, circle_rect);
-		Types::ColorCircle::Color color = findColor(circle_img);
-		result.push_back(Types::ColorCircle(cv::Point((*it)[0], (*it)[1]), color));
+		Types::ColorPoint::Color color = findColor(circle_img);
+		result.push_back(Types::ColorPoint(cv::Point((*it)[0], (*it)[1]), color));
 	}
-	CLOG(LERROR)<<"End onProcess in GenerateCheckers";
-	out_circles.write(result);
+	CLOG(LERROR)<<"End onProcess in ColorPoints";
+	out_points.write(result);
 }
 
-void GenerateCheckers::onProcessWithMap() {
+void ColorPoints::onProcessWithMask() {
 	const cv::Mat src = in_img.read();
-	const cv::Mat src_map = in_img_map.read();
+	const cv::Mat src_mask = in_img_mask.read();
 	const Types::Circles circles = in_circles.read();
-	CLOG(LERROR)<<"Start onProcess with map in GenerateCheckers";
-	std::vector<Types::ColorCircle> result;
+	CLOG(LERROR)<<"Start onProcess with mask in ColorPoints";
+	std::vector<Types::ColorPoint> result;
 	float x, y, length;
 	std::vector<Vec3f>::const_iterator end_it = circles.circles.end();
 	for(std::vector<Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
 	{
 		x = (*it)[0]-(*it)[2];
+		if(x < 0) x = 0;
 		y = (*it)[1]-(*it)[2];
+		if(y < 0) y = 0;
 		length = 2*(*it)[2];
+		if(length+x > src.cols) length = src.cols-x;
+		if(length+y > src.rows) length = src.rows-y;
 		cv::Rect circle_rect = cv::Rect(x, y, length, length);
 		cv::Mat circle_img(src, circle_rect);
-		cv::Mat circle_img_map(src_map, circle_rect);
-		Types::ColorCircle::Color color = findColor(circle_img, circle_img_map);
-		result.push_back(Types::ColorCircle(cv::Point((*it)[0], (*it)[1]), color));
+		cv::Mat circle_img_mask(src_mask, circle_rect);
+		Types::ColorPoint::Color color = findColor(circle_img, circle_img_mask);
+		result.push_back(Types::ColorPoint(cv::Point((*it)[0], (*it)[1]), color));
 	}
-	CLOG(LERROR)<<"End onProcess with map in GenerateCheckers";
-	out_circles.write(result);
+	CLOG(LERROR)<<"End onProcess with mask in ColorPoints";
+	out_points.write(result);
 }
 
-Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img)
+Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img)
 {
 	// TODO
 	std::vector<cv::Mat> hsv_planes;
@@ -119,7 +127,7 @@ Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img)
 
 	float red_sum = 0, yellow_sum = 0, green_sum = 0, blue_sum = 0;
 
-	CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
+	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
 	for(int i=0; i<7; ++i)
 		red_sum += histH.at<float>(i);
@@ -131,17 +139,17 @@ Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img)
 		blue_sum += histH.at<float>(i);
 	
 	if(red_sum>yellow_sum && red_sum>green_sum && red_sum>blue_sum)
-		return Types::ColorCircle::COLOR_RED;
+		return Types::ColorPoint::COLOR_RED;
 	else if(yellow_sum>red_sum && yellow_sum>green_sum && yellow_sum>blue_sum)
-		return Types::ColorCircle::COLOR_YELLOW;
+		return Types::ColorPoint::COLOR_YELLOW;
 	else if(green_sum>red_sum && green_sum>yellow_sum && green_sum>blue_sum)
-		return Types::ColorCircle::COLOR_GREEN;
+		return Types::ColorPoint::COLOR_GREEN;
 	else if(blue_sum>red_sum && blue_sum>yellow_sum && blue_sum>green_sum)
-		return Types::ColorCircle::COLOR_BLUE;
-	return Types::ColorCircle::COLOR_OTHER;
+		return Types::ColorPoint::COLOR_BLUE;
+	return Types::ColorPoint::COLOR_OTHER;
 }
 
-Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img, const cv::Mat& img_map)
+Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img, const cv::Mat& img_mask)
 {
 	// TODO
 	std::vector<cv::Mat> hsv_planes;
@@ -153,11 +161,11 @@ Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img, const 
 	bool uniform = true; bool accumulate = false;
 	cv::Mat histH;
 
-	calcHist(&hsv_planes[0], 1, 0, img_map, histH, 1, &histSizeH, &histRangeH, uniform, accumulate);
+	calcHist(&hsv_planes[0], 1, 0, img_mask, histH, 1, &histSizeH, &histRangeH, uniform, accumulate);
 
 	float red_sum = 0, yellow_sum = 0, green_sum = 0, blue_sum = 0;
 
-	CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
+	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
 	for(int i=0; i<7; ++i)
 		red_sum += histH.at<float>(i);
@@ -169,15 +177,15 @@ Types::ColorCircle::Color GenerateCheckers::findColor(const cv::Mat& img, const 
 		blue_sum += histH.at<float>(i);
 	
 	if(red_sum>yellow_sum && red_sum>green_sum && red_sum>blue_sum)
-		return Types::ColorCircle::COLOR_RED;
+		return Types::ColorPoint::COLOR_RED;
 	else if(yellow_sum>red_sum && yellow_sum>green_sum && yellow_sum>blue_sum)
-		return Types::ColorCircle::COLOR_YELLOW;
+		return Types::ColorPoint::COLOR_YELLOW;
 	else if(green_sum>red_sum && green_sum>yellow_sum && green_sum>blue_sum)
-		return Types::ColorCircle::COLOR_GREEN;
+		return Types::ColorPoint::COLOR_GREEN;
 	else if(blue_sum>red_sum && blue_sum>yellow_sum && blue_sum>green_sum)
-		return Types::ColorCircle::COLOR_BLUE;
-	return Types::ColorCircle::COLOR_OTHER;
+		return Types::ColorPoint::COLOR_BLUE;
+	return Types::ColorPoint::COLOR_OTHER;
 }
 
-} //: namespace GenerateCheckers
+} //: namespace ColorPoints
 } //: namespace Processors

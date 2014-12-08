@@ -4,8 +4,8 @@
  * \author Aleksandra Karbarczyk
  */
 
-#ifndef PROCESSDATA_HPP_
-#define PROCESSDATA_HPP_
+#ifndef IMGEDATA_HPP_
+#define IMGEDATA_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -13,30 +13,30 @@
 #include "Property.hpp"
 #include "EventHandler2.hpp"
 #include "Types/ImageData.hpp"
-#include "Types/ColorCircle.hpp"
+#include "Types/ColorPoint.hpp"
 
 #include <opencv2/opencv.hpp>
 
 namespace Processors {
-namespace ProcessData {
+namespace ImageData {
 
 /*!
- * \class ProcessData
- * \brief ProcessData processor class.
+ * \class ImageData
+ * \brief ImageData processor class.
  *
  * Description TODO
  */
-class ProcessData: public Base::Component {
+class ImageData: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	ProcessData(const std::string & name = "ProcessData");
+	ImageData(const std::string & name = "ImageData");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~ProcessData();
+	virtual ~ImageData();
 
 	/*!
 	 * Prepare components interface (register streams and handlers).
@@ -69,7 +69,7 @@ protected:
 
 
 	// Input data streams
-	Base::DataStreamIn<std::vector<Types::ColorCircle> > in_circles;
+	Base::DataStreamIn<std::vector<Types::ColorPoint> > in_color_points;
 	Base::DataStreamIn<std::vector<std::vector<cv::Point> > > in_contours;
 
 	// Output data streams
@@ -87,12 +87,12 @@ protected:
 
 };
 
-} //: namespace ProcessData
+} //: namespace ImageData
 } //: namespace Processors
 
 /*
  * Register processor component.
  */
-REGISTER_COMPONENT("ProcessData", Processors::ProcessData::ProcessData)
+REGISTER_COMPONENT("ImageData", Processors::ImageData::ImageData)
 
-#endif /* PROCESSDATA_HPP_ */
+#endif /* IMGEDATA_HPP_ */

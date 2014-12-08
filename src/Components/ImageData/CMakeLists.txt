@@ -9,10 +9,10 @@ FIND_PACKAGE( OpenCV REQUIRED )
 
 
 # Create an executable file from sources:
-ADD_LIBRARY(ProcessData SHARED ${files})
+ADD_LIBRARY(ImageData SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(ProcessData ${DisCODe_LIBRARIES} 
+TARGET_LINK_LIBRARIES(ImageData ${DisCODe_LIBRARIES} 
 	${OpenCV_LIBS})
 
-INSTALL_COMPONENT(ProcessData)
+INSTALL_COMPONENT(ImageData)

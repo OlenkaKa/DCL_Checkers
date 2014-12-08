@@ -9,10 +9,10 @@ FIND_PACKAGE( OpenCV REQUIRED )
 
 
 # Create an executable file from sources:
-ADD_LIBRARY(GenerateCheckers SHARED ${files})
+ADD_LIBRARY(ColorPoints SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(GenerateCheckers ${DisCODe_LIBRARIES} 
+TARGET_LINK_LIBRARIES(ColorPoints ${DisCODe_LIBRARIES} 
 	${OpenCV_LIBS})
 
-INSTALL_COMPONENT(GenerateCheckers)
+INSTALL_COMPONENT(ColorPoints)

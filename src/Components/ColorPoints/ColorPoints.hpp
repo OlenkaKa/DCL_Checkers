@@ -4,8 +4,8 @@
  * \author Aleksandra Karbarczyk
  */
 
-#ifndef GENERATECHECKERS_HPP_
-#define GENERATECHECKERS_HPP_
+#ifndef COLORPOINTS_HPP_
+#define COLORPOINTS_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -13,31 +13,31 @@
 #include "Property.hpp"
 #include "EventHandler2.hpp"
 #include "Types/Circles/Circles.hpp"
-#include "Types/ColorCircle.hpp"
+#include "Types/ColorPoint.hpp"
 
 #include <opencv2/opencv.hpp>
 
 
 namespace Processors {
-namespace GenerateCheckers {
+namespace ColorPoints {
 
 /*!
- * \class GenerateCheckers
- * \brief GenerateCheckers processor class.
+ * \class ColorCircles
+ * \brief ColorCircles processor class.
  *
  * Description TODO
  */
-class GenerateCheckers: public Base::Component {
+class ColorPoints: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	GenerateCheckers(const std::string & name = "GenerateCheckers");
+	ColorPoints(const std::string & name = "ColorPoints");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~GenerateCheckers();
+	virtual ~ColorPoints();
 
 	/*!
 	 * Prepare components interface (register streams and handlers).
@@ -72,34 +72,34 @@ protected:
 	// Input data streams
 	Base::DataStreamIn<Types::Circles> in_circles;
 	Base::DataStreamIn<cv::Mat> in_img;
-	Base::DataStreamIn<cv::Mat> in_img_map;
+	Base::DataStreamIn<cv::Mat> in_img_mask;
 
 	// Output data streams
-	Base::DataStreamOut<std::vector<Types::ColorCircle> > out_circles;
+	Base::DataStreamOut<std::vector<Types::ColorPoint> > out_points;
 
 	// Handlers
 	Base::EventHandler2 h_onProcess;
-	Base::EventHandler2 h_onProcessWithMap;
+	Base::EventHandler2 h_onProcessWithMask;
 
 	// Properties
 
 	
 	// Handlers
 	void onProcess();
-	void onProcessWithMap();
+	void onProcessWithMask();
 	
 	// Others
-	Types::ColorCircle::Color findColor(const cv::Mat& img);
-	Types::ColorCircle::Color findColor(const cv::Mat& img, const cv::Mat& img_map);
+	Types::ColorPoint::Color findColor(const cv::Mat& img);
+	Types::ColorPoint::Color findColor(const cv::Mat& img, const cv::Mat& img_mask);
 
 };
 
-} //: namespace GenerateCheckers
+} //: namespace ColorPoints
 } //: namespace Processors
 
 /*
  * Register processor component.
  */
-REGISTER_COMPONENT("GenerateCheckers", Processors::GenerateCheckers::GenerateCheckers)
+REGISTER_COMPONENT("ColorPoints", Processors::ColorPoints::ColorPoints)
 
-#endif /* GENERATECHECKERS_HPP_ */
+#endif /* COLORPOINTS_HPP_ */
