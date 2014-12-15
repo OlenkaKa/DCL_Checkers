@@ -46,7 +46,7 @@
 				</Component>
 				
 				<Component name="Morphology_chessboard" type="CvBasic:CvMorphology" priority="4" bump="0">
-					<param name="iterations">1</param>
+					<param name="iterations">2</param>
 					<param name="type">MORPH_OPEN</param>
 				</Component>
 				
