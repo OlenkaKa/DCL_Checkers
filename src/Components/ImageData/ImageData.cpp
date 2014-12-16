@@ -69,7 +69,7 @@ void ImageData::onProcess() {
 	int min_y = INT_MAX;
 	for (std::vector<std::vector<cv::Point> >::iterator it = white_fields.begin() ; it != white_fields.end(); ++it)
 	{
-		if((*it).size()<20)
+		if((*it).size()<50)
 			continue;
 		int sum_x = 0;
 		int sum_y = 0;
