@@ -65,7 +65,7 @@
 				</Component>
 				
 				<Component name="Morphology_checkers" type="CvBasic:CvMorphology" priority="4" bump="0">
-					<param name="iterations">6</param>
+					<param name="iterations">0</param>
 					<param name="type">MORPH_OPEN</param>
 				</Component>
 				
@@ -103,7 +103,7 @@
 		</Subtask>
 		
 		<Subtask name="Visualisation">
-			<Executor name="Exec3" period="0.2">
+			<Executor name="Exec3" period="0.05">
 				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="0">
 					<param name="count">4</param>
 					<param name="title">Circles,InRange,Morp,Chessboard</param>
