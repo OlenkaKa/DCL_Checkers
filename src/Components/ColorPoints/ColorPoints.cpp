@@ -76,8 +76,8 @@ void ColorPoints::onProcess() {
 	CLOG(LERROR)<<"Start onProcess in ColorPoints";
 	std::vector<Types::ColorPoint> result;
 	float x, y, length;
-	std::vector<Vec3f>::const_iterator end_it = circles.circles.end();
-	for(std::vector<Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
+	std::vector<cv::Vec3f>::const_iterator end_it = circles.circles.end();
+	for(std::vector<cv::Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
 	{
 		x = (*it)[0]-(*it)[2];
 		if(x < 0) x = 0;
@@ -102,8 +102,8 @@ void ColorPoints::onProcessWithMask() {
 	CLOG(LERROR)<<"Start onProcess with mask in ColorPoints";
 	std::vector<Types::ColorPoint> result;
 	float x, y, length;
-	std::vector<Vec3f>::const_iterator end_it = circles.circles.end();
-	for(std::vector<Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
+	std::vector<cv::Vec3f>::const_iterator end_it = circles.circles.end();
+	for(std::vector<cv::Vec3f>::const_iterator it = circles.circles.begin(); it != end_it; ++it)
 	{
 		x = (*it)[0]-(*it)[2];
 		if(x < 0) x = 0;
