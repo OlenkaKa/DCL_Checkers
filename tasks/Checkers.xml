@@ -65,7 +65,7 @@
 				</Component>
 				
 				<Component name="Morphology_checkers" type="CvBasic:CvMorphology" priority="4" bump="0">
-					<param name="iterations">0</param>
+					<param name="iterations">2</param>
 					<param name="type">MORPH_OPEN</param>
 				</Component>
 				
@@ -87,12 +87,12 @@
 				</Component>
 				
 				<Component name="GenerateCheckers" type="Checkers:ColorPoints" priority="6" bump="0">
-					<param name="minBlue">107</param>
+					<param name="minBlue">105</param>
 					<param name="maxBlue">113</param>
-					<param name="minGreen">80</param>
-					<param name="maxGreen">100</param>
+					<param name="minGreen">87</param>
+					<param name="maxGreen">98</param>
 					<param name="minYellow">20</param>
-					<param name="maxYellow">28</param>
+					<param name="maxYellow">30</param>
 					<param name="minRed">0</param>
 					<param name="maxRed">7</param>
 				</Component>

@@ -68,7 +68,7 @@ protected:
 
 
 	// Input data streams
-	Base::DataStreamIn<Types::ImageData> in_data;
+	Base::DataStreamIn<Types::ImageData, Base::DataStreamBuffer::Newest> in_data;
 
 	// Output data streams
 
