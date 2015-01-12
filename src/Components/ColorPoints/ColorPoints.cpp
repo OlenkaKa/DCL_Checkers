@@ -16,8 +16,18 @@ namespace Processors {
 namespace ColorPoints {
 
 ColorPoints::ColorPoints(const std::string & name) :
-		Base::Component(name)  {
-
+		Base::Component(name), minBlue("minBlue"), maxBlue("maxBlue"),
+		minGreen("minGreen"), maxGreen("maxGreen"),
+		minYellow("minYellow"), maxYellow("maxYellow"),
+		minRed("minRed"), maxRed("maxRed") {
+			registerProperty(minBlue);
+			registerProperty(maxBlue);
+			registerProperty(minGreen);
+			registerProperty(maxGreen);
+			registerProperty(minYellow);
+			registerProperty(maxYellow);
+			registerProperty(minRed);
+			registerProperty(maxRed);
 }
 
 ColorPoints::~ColorPoints() {
@@ -44,6 +54,7 @@ void ColorPoints::prepareInterface() {
 
 bool ColorPoints::onInit() {
 	CLOG(LERROR)<<"ColorPoints init";
+	CLOG(LERROR)<<minBlue;
 	return true;
 }
 
@@ -129,13 +140,13 @@ Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img)
 
 	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
-	for(int i=0; i<7; ++i)
+	for(int i=minRed; i<maxRed; ++i)
 		red_sum += histH.at<float>(i);
-	for(int i=20; i<28; ++i)
+	for(int i=minYellow; i<maxYellow; ++i)
 		yellow_sum += histH.at<float>(i);
-	for(int i=91; i<98; ++i)
+	for(int i=minGreen; i<maxGreen; ++i)
 		green_sum += histH.at<float>(i);
-	for(int i=107; i<113; ++i)
+	for(int i=minBlue; i<maxBlue; ++i)
 		blue_sum += histH.at<float>(i);
 	
 	if(red_sum>yellow_sum && red_sum>green_sum && red_sum>blue_sum)
@@ -167,13 +178,13 @@ Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img, const cv::Ma
 
 	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
-	for(int i=0; i<7; ++i)
+	for(int i=minRed; i<maxRed; ++i)
 		red_sum += histH.at<float>(i);
-	for(int i=20; i<28; ++i)
+	for(int i=minYellow; i<maxYellow; ++i)
 		yellow_sum += histH.at<float>(i);
-	for(int i=91; i<98; ++i)
+	for(int i=minGreen; i<maxGreen; ++i)
 		green_sum += histH.at<float>(i);
-	for(int i=107; i<113; ++i)
+	for(int i=minBlue; i<maxBlue; ++i)
 		blue_sum += histH.at<float>(i);
 	
 	if(red_sum>yellow_sum && red_sum>green_sum && red_sum>blue_sum)

@@ -82,6 +82,14 @@ protected:
 	Base::EventHandler2 h_onProcessWithMask;
 
 	// Properties
+	Base::Property<long> minBlue;
+	Base::Property<long> maxBlue;
+	Base::Property<long> minGreen;
+	Base::Property<long> maxGreen;
+	Base::Property<long> minYellow;
+	Base::Property<long> maxYellow;
+	Base::Property<long> minRed;
+	Base::Property<long> maxRed;
 
 	
 	// Handlers

@@ -87,6 +87,14 @@
 				</Component>
 				
 				<Component name="GenerateCheckers" type="Checkers:ColorPoints" priority="6" bump="0">
+					<param name="minBlue">107</param>
+					<param name="maxBlue">113</param>
+					<param name="minGreen">80</param>
+					<param name="maxGreen">100</param>
+					<param name="minYellow">20</param>
+					<param name="maxYellow">28</param>
+					<param name="minRed">0</param>
+					<param name="maxRed">7</param>
 				</Component>
 
 				<Component name="ProcessData" type="Checkers:ImageData" priority="7" bump="0">
