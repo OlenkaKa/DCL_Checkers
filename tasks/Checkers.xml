@@ -27,6 +27,7 @@
 					<param name="gain_value">2</param>
 					<param name="frame_rate_value">10</param>
 					<param name="frame_rate_mode">manual</param>
+					<param name="white_balance_mode">onepush</param>
 				</Component>
 				
 				<Component name="CameraInfo" type="CvCoreTypes:CameraInfoProvider" priority="2">
