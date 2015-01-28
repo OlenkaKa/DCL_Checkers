@@ -33,9 +33,8 @@
 				<Component name="CameraInfo" type="CvCoreTypes:CameraInfoProvider" priority="2">
 					<param name="width">1296</param>
 					<param name="height">1032</param>
-					<param name="camera_matrix">1046.710235 0.000000 648.956444 ; 0.000000 1042.437301 498.077314 ; 0 0 1</param>
-					<param name="dist_coeffs">-0.404039 0.179510 -0.001198 -0.000130 0.000000</param>
-					<param name="projection_matrix">869.239380 0.000000 648.505365 0.000000 ; 0.000000 928.966675 491.630000 0.000000 ; 0.000000 0.000000 1.000000 0.000000</param>
+					<param name="camera_matrix">1052.974150 0 646.343139 ; 0 1048.529819 506.165068 ; 0 0 1</param>
+					<param name="dist_coeffs">-0.405033 0.189376 0.000262 0.000465 0.000000</param>
 				</Component>
 				
 				<Component name="Undistort" type="CvBasic:CvUndistort" priority="3" bump="0">
@@ -89,14 +88,14 @@
 				</Component>
 				
 				<Component name="GenerateCheckers" type="Checkers:ColorPoints" priority="6" bump="0">
-					<param name="minBlue">103</param>
-					<param name="maxBlue">120</param>
-					<param name="minGreen">82</param>
+					<param name="minBlue">105</param>
+					<param name="maxBlue">113</param>
+					<param name="minGreen">87</param>
 					<param name="maxGreen">98</param>
 					<param name="minYellow">20</param>
-					<param name="maxYellow">35</param>
+					<param name="maxYellow">30</param>
 					<param name="minRed">0</param>
-					<param name="maxRed">10</param>
+					<param name="maxRed">7</param>
 				</Component>
 
 				<Component name="ProcessData" type="Checkers:ImageData" priority="7" bump="0">

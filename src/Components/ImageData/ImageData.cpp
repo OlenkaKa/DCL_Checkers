@@ -61,7 +61,7 @@ void ImageData::onProcess() {
 	Types::ImageData result;
 
 	CLOG(LERROR)<<"ImageData: Process started.";
-	result.white_fields_num = white_fields.size();
+	result.white_fields_num = 0;
 	result.checker_fields = color_points;
 	int max_x = INT_MIN;
 	int max_y = INT_MIN;
@@ -69,8 +69,10 @@ void ImageData::onProcess() {
 	int min_y = INT_MAX;
 	for (std::vector<std::vector<cv::Point> >::iterator it = white_fields.begin() ; it != white_fields.end(); ++it)
 	{
+		CLOG(LERROR)<<"******** "<<(*it).size();
 		if((*it).size()<50)
 			continue;
+		++result.white_fields_num;
 		int sum_x = 0;
 		int sum_y = 0;
 		for (std::vector<cv::Point>::iterator it2 = (*it).begin() ; it2 != (*it).end(); ++it2)
