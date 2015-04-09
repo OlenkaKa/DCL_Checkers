@@ -15,7 +15,7 @@
 	<!-- task definition -->
 	<Subtasks>
 		<Subtask name="Processing">
-			<Executor name="Exec1" period="0.1">
+			<Executor name="Exec1" period="0.05">
 				
 				<Component name="Source" type="CameraPGR:CameraPGR" priority="1" bump="0">
 					<param name="camera_serial">13481977</param>
@@ -33,9 +33,9 @@
 				<Component name="CameraInfo" type="CvCoreTypes:CameraInfoProvider" priority="2">
 					<param name="width">1296</param>
 					<param name="height">1032</param>
-					<param name="camera_matrix">1046.710235 0.000000 648.956444 ; 0.000000 1042.437301 498.077314 ; 0 0 1</param>
-					<param name="dist_coeffs">-0.404039 0.179510 -0.001198 -0.000130 0.000000</param>
-					<param name="projection_matrix">869.239380 0.000000 648.505365 0.000000 ; 0.000000 928.966675 491.630000 0.000000 ; 0.000000 0.000000 1.000000 0.000000</param>
+					<param name="camera_matrix">1051.020107 0.000000 645.847754 ; 0.000000 1047.329241 500.844827 ; 0 0 1</param>
+					<param name="dist_coeffs">-0.393842 0.157774 -0.000447 0.001075 0.000000</param>
+					<param name="projection_matrix">872.926636 0.000000 647.073604 0.000000 ; 0.000000 936.202454 496.009265 0.000000 ; 0.000000 0.000000 1.000000 0.000000</param>
 				</Component>
 				
 				<Component name="Undistort" type="CvBasic:CvUndistort" priority="3" bump="0">
@@ -56,7 +56,7 @@
 				
 				<Component name="InRange_checkers" type="Checkers:CvInRange" priority="3" bump="0">
 					<param name="channels">3</param>
-					<param name="min_values">0 120 50</param>
+					<param name="min_values">0 100 50</param>
 					<param name="max_values">180 255 255</param>
 				</Component>
 				
@@ -67,12 +67,12 @@
 				</Component>
 				
 				<Component name="Morphology_checkers" type="CvBasic:CvMorphology" priority="4" bump="0">
-					<param name="iterations">2</param>
+					<param name="iterations">3</param>
 					<param name="type">MORPH_OPEN</param>
 				</Component>
 				
 				<Component name="Morphology_chessboard" type="CvBasic:CvMorphology" priority="4" bump="0">
-					<param name="iterations">2</param>
+					<param name="iterations">3</param>
 					<param name="type">MORPH_OPEN</param>
 				</Component>
 				
@@ -89,10 +89,10 @@
 				</Component>
 				
 				<Component name="GenerateCheckers" type="Checkers:ColorPoints" priority="6" bump="0">
-					<param name="minBlue">103</param>
+					<param name="minBlue">105</param>
 					<param name="maxBlue">120</param>
 					<param name="minGreen">82</param>
-					<param name="maxGreen">98</param>
+					<param name="maxGreen">100</param>
 					<param name="minYellow">20</param>
 					<param name="maxYellow">35</param>
 					<param name="minRed">0</param>
@@ -113,10 +113,10 @@
 		</Subtask>
 		
 		<Subtask name="Visualisation">
-			<Executor name="Exec3" period="0.05">
+			<Executor name="Exec3" period="0.02">
 				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="0">
-					<param name="count">4</param>
-					<param name="title">Circles,InRange,Morp,Chessboard</param>
+					<param name="count">7</param>
+					<param name="title">Circles,Normal,InRange,Morphology,InRange2,Mor2,Cont</param>
 				</Component>
 			</Executor>
 		</Subtask>	
@@ -140,6 +140,7 @@
 		<Source name="Undistort.out_img">
 			<sink>Convert.in_img</sink>
 			<sink>Window.in_img0</sink>
+			<sink>Window.in_img1</sink>
 		</Source>
 		<Source name="Convert.out_img">
 			<sink>GenerateCheckers.in_img</sink>
@@ -149,30 +150,32 @@
 		<Source name="InRange_checkers.out_img">
 			<sink>Morphology_checkers.in_img</sink>
 			<sink>GenerateCheckers.in_img_mask</sink>
-			<sink>Window.in_img1</sink>
+			<sink>Window.in_img2</sink>
 		</Source>
 		<Source name="Morphology_checkers.out_img">
 			<sink>Circles.in_img</sink>
-			<sink>Window.in_img2</sink>
+			<sink>Window.in_img3</sink>
 		</Source>
 		<Source name="Circles.out_circles">
 			<sink>GenerateCheckers.in_circles</sink>
 			<sink>Window.in_draw0</sink>
 		</Source>
 		<Source name="InRange_chessboard.out_img">
+			<sink>Window.in_img4</sink>
 			<sink>Morphology_chessboard.in_img</sink>
 		</Source>
 		<Source name="Morphology_chessboard.out_img">
+			<sink>Window.in_img5</sink>
 			<sink>Contour.in_img</sink>
 		</Source>
 		<Source name="Contour.out_contours">
 			<sink>ProcessData.in_contours</sink>
 		</Source>
+		<Source name="Contour.out_img">
+			<sink>Window.in_img6</sink>
+		</Source>
 		<Source name="GenerateCheckers.out_points">
 			<sink>ProcessData.in_color_points</sink>
-		</Source>
-		<Source name="Contour.out_img">
-			<sink>Window.in_img3</sink>
 		</Source>
 		<Source name="ProcessData.out_data">
 			<sink>ROSProxy.in_data</sink>

@@ -41,7 +41,7 @@ void ROSProxy::prepareInterface() {
 bool ROSProxy::onInit() {
 	static char * tmp = NULL;
 	static int tmpi;
-	ros::init(tmpi, &tmp, "discode", ros::init_options::NoSigintHandler);
+	ros::init(tmpi, &tmp, "discode_irp6_checkers", ros::init_options::NoSigintHandler);
 	nh = new ros::NodeHandle;
 	pub = nh->advertise<irp6_checkers::ImageData>(topic_name, 3);
 	return true;

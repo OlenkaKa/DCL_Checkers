@@ -53,8 +53,7 @@ void ColorPoints::prepareInterface() {
 }
 
 bool ColorPoints::onInit() {
-	CLOG(LERROR)<<"ColorPoints init";
-	CLOG(LERROR)<<minBlue;
+	CLOG(LNOTICE)<<"ColorPoints init.";
 	return true;
 }
 
@@ -73,7 +72,7 @@ bool ColorPoints::onStart() {
 void ColorPoints::onProcess() {
 	const cv::Mat src = in_img.read();
 	const Types::Circles circles = in_circles.read();
-	CLOG(LERROR)<<"Start onProcess in ColorPoints";
+	CLOG(LDEBUG)<<"ColorPoints: onProcess started.";
 	std::vector<Types::ColorPoint> result;
 	float x, y, length;
 	std::vector<cv::Vec3f>::const_iterator end_it = circles.circles.end();
@@ -91,7 +90,7 @@ void ColorPoints::onProcess() {
 		Types::ColorPoint::Color color = findColor(circle_img);
 		result.push_back(Types::ColorPoint(cv::Point((*it)[0], (*it)[1]), color));
 	}
-	CLOG(LERROR)<<"End onProcess in ColorPoints";
+	CLOG(LDEBUG)<<"ColorPoints: onProcess finished.";
 	out_points.write(result);
 }
 
@@ -99,7 +98,7 @@ void ColorPoints::onProcessWithMask() {
 	const cv::Mat src = in_img.read();
 	const cv::Mat src_mask = in_img_mask.read();
 	const Types::Circles circles = in_circles.read();
-	CLOG(LERROR)<<"Start onProcess with mask in ColorPoints";
+	CLOG(LDEBUG)<<"ColorPoints: onProcessWithMask started.";
 	std::vector<Types::ColorPoint> result;
 	float x, y, length;
 	std::vector<cv::Vec3f>::const_iterator end_it = circles.circles.end();
@@ -118,13 +117,12 @@ void ColorPoints::onProcessWithMask() {
 		Types::ColorPoint::Color color = findColor(circle_img, circle_img_mask);
 		result.push_back(Types::ColorPoint(cv::Point((*it)[0], (*it)[1]), color));
 	}
-	CLOG(LERROR)<<"End onProcess with mask in ColorPoints";
+	CLOG(LDEBUG)<<"ColorPoints: onProcessWithMask finished.";
 	out_points.write(result);
 }
 
 Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img)
 {
-	// TODO
 	std::vector<cv::Mat> hsv_planes;
 	split(img, hsv_planes);
 
@@ -137,8 +135,6 @@ Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img)
 	calcHist(&hsv_planes[0], 1, 0, cv::Mat(), histH, 1, &histSizeH, &histRangeH, uniform, accumulate);
 
 	float red_sum = 0, yellow_sum = 0, green_sum = 0, blue_sum = 0;
-
-	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
 	for(int i=minRed; i<maxRed; ++i)
 		red_sum += histH.at<float>(i);
@@ -162,7 +158,6 @@ Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img)
 
 Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img, const cv::Mat& img_mask)
 {
-	// TODO
 	std::vector<cv::Mat> hsv_planes;
 	split(img, hsv_planes);
 
@@ -175,8 +170,6 @@ Types::ColorPoint::Color ColorPoints::findColor(const cv::Mat& img, const cv::Ma
 	calcHist(&hsv_planes[0], 1, 0, img_mask, histH, 1, &histSizeH, &histRangeH, uniform, accumulate);
 
 	float red_sum = 0, yellow_sum = 0, green_sum = 0, blue_sum = 0;
-
-	//CLOG(LERROR)<<"Matrix size: "<<histH.size().height<<" "<<histH.size().width<<" Matrix type: "<<histH.type();
 
 	for(int i=minRed; i<maxRed; ++i)
 		red_sum += histH.at<float>(i);

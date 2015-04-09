@@ -39,7 +39,7 @@ void ImageData::prepareInterface() {
 }
 
 bool ImageData::onInit() {
-	CLOG(LERROR)<<"ImageData init";
+	CLOG(LNOTICE)<<"ImageData init.";
 	return true;
 }
 
@@ -48,6 +48,7 @@ bool ImageData::onFinish() {
 }
 
 bool ImageData::onStop() {
+	CLOG(LNOTICE)<<"ImageData stop.";
 	return true;
 }
 
@@ -60,7 +61,7 @@ void ImageData::onProcess() {
 	std::vector<Types::ColorPoint> color_points = in_color_points.read();
 	Types::ImageData result;
 
-	CLOG(LERROR)<<"ImageData: Process started.";
+	CLOG(LDEBUG)<<"ImageData: onProcess function started.";
 	result.white_fields_num = 0;
 	result.checker_fields = color_points;
 	int max_x = INT_MIN;
@@ -69,7 +70,6 @@ void ImageData::onProcess() {
 	int min_y = INT_MAX;
 	for (std::vector<std::vector<cv::Point> >::iterator it = white_fields.begin() ; it != white_fields.end(); ++it)
 	{
-		CLOG(LERROR)<<"******** "<<(*it).size();
 		if((*it).size()<50)
 			continue;
 		++result.white_fields_num;
@@ -96,7 +96,7 @@ void ImageData::onProcess() {
 	result.max_corner = cv::Point(max_x, max_y);
 	result.min_corner = cv::Point(min_x, min_y);
 
-	CLOG(LERROR)<<"ImageData: Process finished.";
+	CLOG(LDEBUG)<<"ImageData: onProcess function finished.";
 	out_data.write(result);
 }
 
