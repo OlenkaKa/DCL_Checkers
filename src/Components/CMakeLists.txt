@@ -6,3 +6,5 @@ ADD_COMPONENT(ImageData)
 ADD_COMPONENT(ColorPoints)
 
 ADD_COMPONENT(ROSProxy)
+
+ADD_COMPONENT(ImageSender)
